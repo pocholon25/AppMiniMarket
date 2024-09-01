@@ -50,14 +50,11 @@ class AuthViewModel @Inject constructor(
     private val _compraList = MutableStateFlow<List<Compra>>(emptyList())
     val compraList: StateFlow<List<Compra>> get() = _compraList
 
+    private val _usuario = MutableLiveData<String>()
+    val usuario: LiveData<String> = _usuario
 
-    private val _usuario = MutableStateFlow("")
-    val usuario: StateFlow<String> get() = _usuario
-
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> get() = _password
-
+    private val _password = MutableLiveData<String>()
+    val password: LiveData<String> = _password
 
     private val _productos = MutableStateFlow<List<ProductoResponse>>(emptyList())
     val productos: StateFlow<List<ProductoResponse>> get() = _productos
@@ -130,55 +127,14 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
-    fun login(usuario: String, password: String) {
+    fun login(){
         viewModelScope.launch {
-            Log.d("AuthViewModel", "Iniciando el proceso de login")
-            try {
-                Log.d("AuthViewModel", "Enviando solicitud de login: usuario=$usuario, password=$password")
-                val response = getPostUseCase.login(LoginRequest(usuario, password))
-
-                Log.d("AuthViewModel", "Verificando respuesta del servidor...")
-                if (response != null) {
-                    Log.d("AuthViewModel", "Respuesta del servidor recibida: $response")
-                    _loginResponse.value = Evento(response)
-                    if (response.success) {
-                        Log.d("AuthViewModel", "Login exitoso, usuario autenticado.")
-                        _clienteActual.value = Cliente(idcliente = response.idcliente)
-                    } else {
-                        Log.e("AuthViewModel", "Login fallido: ${response.message}")
-                    }
-                } else {
-                    Log.e("AuthViewModel", "Respuesta nula del servidor.")
-                    _loginResponse.value = Evento(
-                        LoginResponse(
-                            message = "No se pudo obtener una respuesta válida del servidor.",
-                            success = false,
-                            nombre = "",
-                            email = "",
-                            celular = "",
-                            password = "",
-                            idcliente = 0
-                        )
-                    )
-                }
-            } catch (e: Exception) {
-                Log.e("AuthViewModel", "Error de red o servidor: ${e.message}", e)
-                _loginResponse.value = Evento(
-                    LoginResponse(
-                        message = e.message ?: "Error inesperado",
-                        success = false,
-                        nombre = "",
-                        email = "",
-                        celular = "",
-                        password = "",
-                        idcliente = 0
-                    )
-                )
-            }
-            Log.d("AuthViewModel", "Proceso de login finalizado")
+            val response = getPostUseCase.login(LoginRequest(usuario.value!!, password.value!!))
+            _loginResponse.value = Evento(response)
         }
     }
+
+
     fun updateCliente(id: Long, clienteUpdate: ClienteUpdate) {
         viewModelScope.launch {
             try {
@@ -308,6 +264,13 @@ class AuthViewModel @Inject constructor(
 
     fun getTotal(): Double {
         return _compraList.value.sumOf { it.cantidad * it.precio }
+    }
+    fun updateUsuario(newUsuario: String) {
+        _usuario.value = newUsuario
+    }
+
+    fun updatePassword(newPassword: String) {
+        _password.value = newPassword
     }
 
     val total: StateFlow<Double> = _compraList.map { compraList ->

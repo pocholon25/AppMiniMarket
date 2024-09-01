@@ -23,7 +23,7 @@ class PostRepository @Inject constructor(private val postService: PostService){
         return postService.registerClient(clienteRequest)
     }
 
-    suspend fun login(loginRequest: LoginRequest): LoginResponse? {
+    suspend fun login(loginRequest: LoginRequest): LoginResponse {
         return postService.login(loginRequest)
     }
 

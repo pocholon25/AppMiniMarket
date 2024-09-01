@@ -128,7 +128,7 @@ fun CompraCard(
                 painter = rememberAsyncImagePainter(
                     model = compra.imagenUrl,
                     error = painterResource(id = R.drawable.ic_launcher_foreground),
-                    placeholder = painterResource(id = R.drawable.logo),
+                    placeholder = painterResource(id = R.drawable.minimark),
                     contentScale = ContentScale.Crop
                 ),
                 contentDescription = null,

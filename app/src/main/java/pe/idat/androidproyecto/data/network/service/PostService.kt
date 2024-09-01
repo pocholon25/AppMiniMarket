@@ -54,23 +54,10 @@ class PostService @Inject constructor(private val retrofitClient: RetrofitClient
             }
         }
     }
-    suspend fun login(loginRequest: LoginRequest): LoginResponse? {
-        return withContext(Dispatchers.IO) {
-            try {
-                Log.d("PostService", "Enviando solicitud de login: $loginRequest")
-                val response = retrofitClient.login(loginRequest)
-                Log.d("PostService", "Respuesta de login: ${response.body()}")
-                if (response.isSuccessful && response.body() != null) {
-                    response.body()
-                } else {
-                    Log.e("PostService", "Error en la respuesta de login: ${response.errorBody()?.string()}")
-                    null
-                }
-            } catch (e: Exception) {
-                Log.e("PostService", "Error al realizar login: ${e.message}")
-                e.printStackTrace()
-                null
-            }
+    suspend fun login(loginRequest: LoginRequest):LoginResponse{
+        return withContext(Dispatchers.IO){
+            val response = retrofitClient.login(loginRequest)
+            response.body()!!
         }
     }
 

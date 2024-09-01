@@ -22,7 +22,7 @@ class GetPostUseCase @Inject constructor(private val postRepository: PostReposit
         return postRepository.registerClient(clienteRequest)
     }
 
-    suspend fun login(loginRequest: LoginRequest): LoginResponse? {
+    suspend fun login(loginRequest: LoginRequest): LoginResponse{
         return postRepository.login(loginRequest)
     }
 

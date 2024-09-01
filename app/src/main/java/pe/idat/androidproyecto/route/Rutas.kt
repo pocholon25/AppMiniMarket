@@ -19,5 +19,6 @@ sealed class Rutas(val ruta: String) {
     object Vegetales: Rutas("vegetales")
     object Carrito: Rutas("carrito")
     object Boleta: Rutas("boleta")
+    object Splash: Rutas("splash")
 
 }

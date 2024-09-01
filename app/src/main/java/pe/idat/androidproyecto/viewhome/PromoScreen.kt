@@ -27,7 +27,6 @@ import androidx.navigation.NavController
 import pe.idat.androidproyecto.AuthViewModel
 import pe.idat.androidproyecto.components.ItemCard
 import pe.idat.androidproyecto.components.LazyGrid
-import pe.idat.androidproyecto.model.promo
 
 @Composable
 fun PromoScreen(navController: NavController, viewModel: AuthViewModel) {

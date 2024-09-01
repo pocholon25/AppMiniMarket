@@ -27,9 +27,7 @@ import androidx.navigation.NavController
 import pe.idat.androidproyecto.AuthViewModel
 import pe.idat.androidproyecto.components.ItemCard
 import pe.idat.androidproyecto.components.LazyGrid
-import pe.idat.androidproyecto.model.lacteos
-import pe.idat.androidproyecto.model.promo
-import pe.idat.androidproyecto.route.Rutas
+
 
 @Composable
 fun FavoriteScreen(navController: NavController, viewModel: AuthViewModel) {

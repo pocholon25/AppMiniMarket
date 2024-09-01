@@ -19,7 +19,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,6 +50,8 @@ import pe.idat.androidproyecto.viewhome.PromoScreen
 import pe.idat.androidproyecto.viewlogin.LoginScreen
 import pe.idat.androidproyecto.viewlogin.RecuperarScreen
 import pe.idat.androidproyecto.viewlogin.RegistrarScreen
+import pe.idat.androidproyecto.viewlogin.SplashScreen
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -64,7 +65,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val coroutineScope = rememberCoroutineScope()
-                val authViewModel: AuthViewModel = hiltViewModel() // Instancia compartida del ViewModel
+                val authViewModel: AuthViewModel =
+                    hiltViewModel() // Instancia compartida del ViewModel
 
                 // Track current destination
                 var currentDestination by remember { mutableStateOf<String?>(null) }
@@ -75,7 +77,6 @@ class MainActivity : ComponentActivity() {
                         Log.d("NavigationDebug", "Updated Destination: $currentDestination")
                     }
                 }
-                val context = LocalContext.current
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
@@ -85,8 +86,8 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         topBar = {
-                            Log.d("NavigationDebug", "Top Bar Check - Current Destination: $currentDestination")
                             if (currentDestination !in listOf(
+                                    Rutas.Splash.ruta,
                                     Rutas.Login.ruta,
                                     Rutas.Registrar.ruta,
                                     Rutas.Recuperar.ruta
@@ -101,8 +102,7 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(Rutas.Login.ruta) {
                                             popUpTo(Rutas.Home.ruta) { inclusive = true }
                                         }
-                                    }
-                                    ,
+                                    },
                                     onAction2Click = {
                                         navController.navigate(Rutas.Carrito.ruta)
                                     }
@@ -112,48 +112,81 @@ class MainActivity : ComponentActivity() {
                         content = { innerPadding ->
                             NavHost(
                                 navController = navController,
-                                startDestination = Rutas.Login.ruta,
+                                startDestination = Rutas.Splash.ruta,
                                 modifier = Modifier
                                     .padding(innerPadding)
                                     .fillMaxSize()
                             ) {
+                                composable(Rutas.Splash.ruta) {
+                                    SplashScreen(navController)
+                                }
                                 composable(Rutas.Login.ruta) {
-                                    LoginScreen(navController, authViewModel) }
-                                composable(Rutas.Registrar.ruta) { RegistrarScreen(navController,authViewModel) }
+                                    LoginScreen(navController, authViewModel)
+                                }
+                                composable(Rutas.Registrar.ruta) {
+                                    RegistrarScreen(
+                                        navController,
+                                        authViewModel
+                                    )
+                                }
                                 composable(Rutas.Recuperar.ruta) { RecuperarScreen(navController) }
-                                composable(Rutas.Home.ruta) { HomeScreen(navController,authViewModel) }
-                                composable(Rutas.Profile.ruta) { ProfileScreen(navController,authViewModel) }
+                                composable(Rutas.Home.ruta) {
+                                    HomeScreen(
+                                        navController,
+                                        authViewModel
+                                    )
+                                }
+                                composable(Rutas.Profile.ruta) {
+                                    ProfileScreen(
+                                        navController,
+                                        authViewModel
+                                    )
+                                }
                                 composable(Rutas.Promo.ruta) {
-                                    PromoScreen(navController, authViewModel) }
+                                    PromoScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Favorite.ruta) {
-                                    FavoriteScreen(navController, authViewModel) }
+                                    FavoriteScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Populares.ruta) {
-                                    PopularesScreen(navController, authViewModel) }
+                                    PopularesScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Abarrotes.ruta) {
-                                    AbarrotesScreen(navController, authViewModel) }
+                                    AbarrotesScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Bebidas.ruta) {
-                                    BebidasScreen(navController, authViewModel) }
+                                    BebidasScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Embutidos.ruta) {
-                                    EmbutidosScreen(navController, authViewModel) }
+                                    EmbutidosScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Lacteos.ruta) {
-                                    LacteosScreen(navController, authViewModel) }
+                                    LacteosScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Licores.ruta) {
-                                    LicoresScreen(navController, authViewModel) }
+                                    LicoresScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Limpieza.ruta) {
-                                    LimpiezaScreen(navController, authViewModel) }
+                                    LimpiezaScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Seemore.ruta) {
-                                    SeemoreScreen(navController, authViewModel) }
+                                    SeemoreScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Vegetales.ruta) {
-                                    VegetalesScreen(navController, authViewModel) }
+                                    VegetalesScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Carrito.ruta) {
-                                    CarritoScreen(navController, authViewModel) }
+                                    CarritoScreen(navController, authViewModel)
+                                }
                                 composable(Rutas.Boleta.ruta) {
                                     BoletaVentaScreen(navController, authViewModel)
                                 }
+
                             }
                         },
                         floatingActionButton = {
                             if (currentDestination !in listOf(
+                                    Rutas.Splash.ruta,
                                     Rutas.Login.ruta,
                                     Rutas.Registrar.ruta,
                                     Rutas.Recuperar.ruta
